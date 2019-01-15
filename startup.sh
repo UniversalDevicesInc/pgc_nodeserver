@@ -16,8 +16,8 @@ TYPE=`cat server.json | jq '.type' | tr -d '"'`
 EXECUTABLE=`cat server.json | jq '.executable' | tr -d '"'`
 [[ -z "$EXECUTABLE" ]] && { echo "executable not found in server.json. Exiting."; exit 1; }
 
-[[ $TYPE == "python" ]] && { /usr/bin/env pip install pgc_interface; }
-[[ $TYPE == "python3" ]] && { /usr/bin/env pip3 install pgc_interface; }
+# [[ $TYPE == "python" ]] && { /usr/bin/env pip install pgc_interface; }
+# [[ $TYPE == "python3" ]] && { /usr/bin/env pip3 install pgc_interface; }
 # [[ $TYPE == "node" ]] && { /usr/bin/env npm install; }
 
 /usr/bin/env bash -xe ./$CLOUDINSTALL
