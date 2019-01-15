@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# [[ -z "$PGURL" ]] && { echo "PGURL environment variable not found. Exiting."; exit 1; }
-# curl -X GET $PGURL -o .env
+[[ -z "$PGURL" ]] && { echo "PGURL environment variable not found. Exiting."; exit 1; }
+curl -X GET $PGURL -o .env
 
 GITURL=`cat .env | jq '.nodeServer.url' | tr -d '"'`
 [[ -z "$GITURL" ]] && { echo "GIT URL not found in config. Exiting."; exit 1; }
