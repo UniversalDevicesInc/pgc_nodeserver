@@ -17,7 +17,7 @@ else
   ln -s /app/template/ nodeserver
 fi
 
-if [ -z "$PGCLOCAL" ]
+if [ ! -z "$PGCLOCAL" ]
 then
   ln -s /app/pgc_interface nodeserver/pgc_interface
   cd /app/nodeserver
@@ -38,7 +38,10 @@ then
   then
     /usr/bin/env pip3 install 'pgc_interface>=1.1.0'
   fi
-  # /usr/bin/env pip3 install paho-mqtt
+  if [ ! -z "$PGCLOCAL" ]
+  then
+    /usr/bin/env pip3 install paho-mqtt
+  fi
 fi
 # [[ $TYPE == "node" ]] && { /usr/bin/env npm install pgc_interface; }
 
