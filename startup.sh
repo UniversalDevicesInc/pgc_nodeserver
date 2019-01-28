@@ -15,12 +15,14 @@ then
   git clone --depth 1 $GITURL nodeserver
 else
   ln -s /app/template/ nodeserver
-  ln -s /app/pgc_interface nodeserver/pgc_interface
 fi
 
-cd /app/nodeserver
-head -5 /app/nodeserver/pgc_interface/pgc_interface.py
-
+if [ -z "$PGCLOCAL" ]
+then
+  ln -s /app/pgc_interface nodeserver/pgc_interface
+  cd /app/nodeserver
+  head -5 /app/nodeserver/pgc_interface/pgc_interface.py
+fi
 
 CLOUDINSTALL=`cat server.json | jq '.install_cloud' | tr -d '"'`
 [[ -z "$CLOUDINSTALL" ]] && { echo ".install_cloud not found in server.json. Exiting."; exit 1; }
