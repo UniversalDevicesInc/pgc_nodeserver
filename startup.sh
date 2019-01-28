@@ -34,7 +34,7 @@ if [ $TYPE == "python3" ]
 then
   if [ -z "$LOCAL" ]
   then
-    /usr/bin/env pip3 install pgc_interface
+    /usr/bin/env pip3 install 'pgc_interface>=1.1.0'
   fi
   # /usr/bin/env pip3 install paho-mqtt
 fi

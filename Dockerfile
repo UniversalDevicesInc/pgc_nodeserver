@@ -9,7 +9,6 @@ ENV STAGE $STAGE
 ENV LOCAL $LOCAL
 RUN apt-get update
 RUN apt-get -qqy install git curl jq
-RUN pip3 install paho-mqtt
 
 RUN mkdir -p /app/logs
 WORKDIR /app
