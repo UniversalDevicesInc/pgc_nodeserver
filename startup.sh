@@ -10,7 +10,7 @@ MQTTURL=`cat .env | jq '.mqttUrl' | tr -d '"'`
 [[ -z "$MQTTURL" ]] && { echo "MQTT URL not found in config. Exiting."; exit 1; }
 NODESERVER=`cat .env | jq '.nodeServer'`
 
-if [ -z "$LOCAL" ]
+if [ -z "$LOCAL" ] || [ ! "$LOCAL" ]
 then
   git clone --depth 1 $GITURL nodeserver
 else
