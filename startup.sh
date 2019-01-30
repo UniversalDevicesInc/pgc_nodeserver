@@ -35,7 +35,7 @@ EXECUTABLE=`cat server.json | jq '.executable' | tr -d '"'`
 # [[ $TYPE == "python" ]] && { /usr/bin/env pip install pgc_interface; }
 if [ $TYPE == "python3" ]
 then
-  if [ -z "$LOCAL" ]
+  if [ -z "$LOCAL" ]|| [ "$LOCAL" == false ]
   then
     /usr/bin/env pip3 install 'pgc_interface>=1.1.0'
   fi
