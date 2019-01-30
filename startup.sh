@@ -20,9 +20,10 @@ fi
 if [ ! -z "$PGCLOCAL" ]
 then
   ln -s /app/pgc_interface nodeserver/pgc_interface
-  cd /app/nodeserver
   head -5 /app/nodeserver/pgc_interface/pgc_interface.py
 fi
+
+cd /app/nodeserver
 
 CLOUDINSTALL=`cat server.json | jq '.install_cloud' | tr -d '"'`
 [[ -z "$CLOUDINSTALL" ]] && { echo ".install_cloud not found in server.json. Exiting."; exit 1; }
