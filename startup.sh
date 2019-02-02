@@ -35,12 +35,10 @@ EXECUTABLE=`cat server.json | jq '.executable' | tr -d '"'`
 # [[ $TYPE == "python" ]] && { /usr/bin/env pip install pgc_interface; }
 if [ $TYPE == "python3" ]
 then
-  if [ -z "$LOCAL" ]|| [ "$LOCAL" == false ]
+  if [ -z "$PGCLOCAL" ] || [ "$PGCLOCAL" == false ]
   then
     /usr/bin/env pip3 install 'pgc_interface>=1.1.0'
-  fi
-  if [ ! -z "$PGCLOCAL" ]
-  then
+  else
     /usr/bin/env pip3 install paho-mqtt
   fi
 fi
