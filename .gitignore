@@ -81,3 +81,4 @@ typings/
 
 # Package Specific
 run_local.sh
+certs/

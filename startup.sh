@@ -3,11 +3,12 @@
 [[ -z "$PGURL" ]] && { echo "PGURL environment variable not found. Exiting."; exit 1; }
 
 curl -X GET $PGURL -o .env
-cat .env
+curl -X GET https://www.amazontrust.com/repository/AmazonRootCA1.pem -o /app/certs/AmazonRootCA1.pem
 GITURL=`cat .env | jq '.nodeServer.url' | tr -d '"'`
-MQTTURL=`cat .env | jq '.mqttUrl' | tr -d '"'`
-[[ -z "$GITURL" ]] && { echo "GIT URL not found in config. Exiting."; exit 1; }
-[[ -z "$MQTTURL" ]] && { echo "MQTT URL not found in config. Exiting."; exit 1; }
+MQTTENDPOINT=`cat .env | jq '.iotHost' | tr -d '"'`
+cat .env | jq '.iotPrivateKey' | tr -d '"' | sed 's/\\n/\n/g' > /app/certs/private.key
+cat .env | jq '.iotCert' | tr -d '"' | sed 's/\\n/\n/g' > /app/certs/iot.crt
+[[ "$GITURL" == "null" ]] && { echo "GIT URL not found in config. Exiting."; exit 1; }
 NODESERVER=`cat .env | jq '.nodeServer'`
 
 if [ -z "$LOCAL" ] || [ "$LOCAL" == false ]
@@ -39,10 +40,10 @@ then
   then
     /usr/bin/env pip3 install 'pgc_interface>=1.1.0'
   else
-    /usr/bin/env pip3 install paho-mqtt
+    /usr/bin/env pip3 install AWSIoTPythonSDK
   fi
 fi
 # [[ $TYPE == "node" ]] && { /usr/bin/env npm install pgc_interface; }
 
 /usr/bin/env bash -xe ./$CLOUDINSTALL
-PGURL=$PGURL MQTTURL=$MQTTURL NODESERVER=$NODESERVER /usr/bin/env $TYPE ./$EXECUTABLE
+MQTTENDPOINT=$MQTTENDPOINT NODESERVER=$NODESERVER /usr/bin/env $TYPE ./$EXECUTABLE

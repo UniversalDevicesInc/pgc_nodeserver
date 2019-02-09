@@ -11,6 +11,7 @@ RUN apt-get update
 RUN apt-get -qqy install git curl jq
 
 RUN mkdir -p /app/logs
+RUN mkdir -p /app/certs
 WORKDIR /app
 # COPY certs/ /app/certs
 COPY startup.sh /app/
