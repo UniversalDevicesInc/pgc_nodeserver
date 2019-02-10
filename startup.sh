@@ -3,9 +3,11 @@
 [[ -z "$PGURL" ]] && { echo "PGURL environment variable not found. Exiting."; exit 1; }
 
 curl -X GET $PGURL -o .env
+cat .env
 curl -X GET https://www.amazontrust.com/repository/AmazonRootCA1.pem -o /app/certs/AmazonRootCA1.pem
 GITURL=`cat .env | jq '.nodeServer.url' | tr -d '"'`
 MQTTENDPOINT=`cat .env | jq '.iotHost' | tr -d '"'`
+STAGE=`cat .env | jq '.stage' | tr -d '"'`
 cat .env | jq '.iotPrivateKey' | tr -d '"' | sed 's/\\n/\n/g' > /app/certs/private.key
 cat .env | jq '.iotCert' | tr -d '"' | sed 's/\\n/\n/g' > /app/certs/iot.crt
 [[ "$GITURL" == "null" ]] && { echo "GIT URL not found in config. Exiting."; exit 1; }
@@ -46,4 +48,4 @@ fi
 # [[ $TYPE == "node" ]] && { /usr/bin/env npm install pgc_interface; }
 
 /usr/bin/env bash -xe ./$CLOUDINSTALL
-MQTTENDPOINT=$MQTTENDPOINT NODESERVER=$NODESERVER /usr/bin/env $TYPE ./$EXECUTABLE
+STAGE=$STAGE MQTTENDPOINT=$MQTTENDPOINT NODESERVER=$NODESERVER /usr/bin/env $TYPE ./$EXECUTABLE
