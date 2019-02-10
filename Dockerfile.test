@@ -1,0 +1,6 @@
+# Global
+FROM einstein42/pgc_nodeserver:beta_python
+LABEL maintainer="James Milne <milne.james@gmail.com>"
+
+COPY ecobee/ /app/template
+ENTRYPOINT [ "/usr/bin/env", "bash", "-xe", "startup.sh" ]
