@@ -1,6 +1,10 @@
 #!/bin/bash
 
-[[ -z "$PGURL" ]] && { echo "PGURL environment variable not found. Exiting."; exit 1; }
+if [ -z "$PGURL" ] || [ "$PGURL" == "null" ]
+then
+  echo "PGURL environment variable not found. Exiting."
+  exit 1
+fi
 
 curl -X GET $PGURL -o .env
 cat .env
@@ -26,14 +30,13 @@ then
   head -5 /app/nodeserver/pgc_interface/pgc_interface.py
 fi
 
+mkdir -p /app/certs
 cd /app/nodeserver
 
-CLOUDINSTALL=`cat server.json | jq '.install_cloud' | tr -d '"'`
-[[ -z "$CLOUDINSTALL" ]] && { echo ".install_cloud not found in server.json. Exiting."; exit 1; }
 TYPE=`cat server.json | jq '.type' | tr -d '"'`
-[[ -z "$TYPE" ]] && { echo "type not found in server.json. Exiting."; exit 1; }
+[[ "$TYPE" == "null" ]] && { echo "type not found in server.json. Exiting."; exit 1; }
 EXECUTABLE=`cat server.json | jq '.executable' | tr -d '"'`
-[[ -z "$EXECUTABLE" ]] && { echo "executable not found in server.json. Exiting."; exit 1; }
+[[ "$EXECUTABLE" == "null" ]] && { echo "executable not found in server.json. Exiting."; exit 1; }
 
 # [[ $TYPE == "python" ]] && { /usr/bin/env pip install pgc_interface; }
 if [ $TYPE == "python3" ]
@@ -47,5 +50,11 @@ then
 fi
 # [[ $TYPE == "node" ]] && { /usr/bin/env npm install pgc_interface; }
 
-/usr/bin/env bash -xe ./$CLOUDINSTALL
+CLOUDINSTALL=`cat server.json | jq '.install_cloud' | tr -d '"'`
+if [ "$CLOUDINSTALL" == "null" ]
+then
+  echo "install_cloud not found in server.json. Skipping."
+else
+  /usr/bin/env bash -xe ./$CLOUDINSTALL
+fi
 STAGE=$STAGE MQTTENDPOINT=$MQTTENDPOINT NODESERVER=$NODESERVER /usr/bin/env $TYPE ./$EXECUTABLE
