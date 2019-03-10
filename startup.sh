@@ -30,6 +30,7 @@ then
   head -5 /app/nodeserver/pgc_interface/pgc_interface.py
 fi
 
+mkdir -p /app/logs.json
 mkdir -p /app/certs
 cd /app/nodeserver
 
@@ -48,7 +49,10 @@ then
     /usr/bin/env pip3 install AWSIoTPythonSDK
   fi
 fi
-# [[ $TYPE == "node" ]] && { /usr/bin/env npm install pgc_interface; }
+if [ $TYPE == "node" ]
+then
+  /usr/bin/env npm install
+fi
 
 CLOUDINSTALL=`cat server.json | jq '.install_cloud' | tr -d '"'`
 if [ "$CLOUDINSTALL" == "null" ]
