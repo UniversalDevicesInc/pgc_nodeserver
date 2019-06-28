@@ -7,7 +7,7 @@ then
 fi
 
 curl -X GET $PGURL -o .env
-cat .env
+# cat .env
 curl -X GET https://www.amazontrust.com/repository/AmazonRootCA1.pem -o /app/certs/AmazonRootCA1.pem
 GITURL=`cat .env | jq '.nodeServer.url' | tr -d '"'`
 MQTTENDPOINT=`cat .env | jq '.iotHost' | tr -d '"'`
