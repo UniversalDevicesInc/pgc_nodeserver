@@ -81,4 +81,5 @@ typings/
 
 # Package Specific
 run_local.sh
+run_prod.sh
 certs/

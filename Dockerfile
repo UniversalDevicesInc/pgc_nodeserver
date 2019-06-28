@@ -17,4 +17,4 @@ WORKDIR /app
 COPY startup.sh /app/
 # COPY ecobee/ /app/template
 # COPY pgc_interface/pgc_interface /app/pgc_interface
-ENTRYPOINT [ "/usr/bin/env", "bash", "-xe", "startup.sh" ]
+ENTRYPOINT [ "/usr/bin/env", "bash", "-e", "startup.sh" ]
